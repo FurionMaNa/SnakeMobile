@@ -96,6 +96,11 @@ public class MainActivity extends AppCompatActivity{
     }
 
     class MyTimer extends java.util.TimerTask{
+
+        public boolean isAte(){
+            return false;
+        }
+
         @Override
         public void run() {
             Log.i("my","tick");
