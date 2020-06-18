@@ -29,41 +29,55 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        snake=new SnakeClass();
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         drawView=new DrawView(this);
-        LinearLayout linearLayout=findViewById(R.id.linearLayout2);
-        linearLayout.addView(drawView);
-        ((Button)findViewById(R.id.down)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snake.onMove(10,"down");
-                drawView.invalidate();
+        final LinearLayout linearLayout2=findViewById(R.id.linearLayout2);
+        final int[] h = new int[1];
+        final int[] w = new int[1];
+        linearLayout2.post(new Runnable(){
+            public void run(){
+                h[0] = linearLayout2.getHeight();
+                w[0] = linearLayout2.getWidth();
+                snake=new SnakeClass(w[0],h[0]);
+                linearLayout2.addView(drawView);
+                snake.setSpeed(40);
+                ((Button)findViewById(R.id.down)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snake.setDirection("down");
+                        drawView.invalidate();
+                    }
+                });
+                ((Button)findViewById(R.id.up)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snake.setDirection("up");
+                        drawView.invalidate();
+                    }
+                });
+                ((Button)findViewById(R.id.left)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snake.setDirection("left");
+                        drawView.invalidate();
+                    }
+                });
+                ((Button)findViewById(R.id.right)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        snake.setDirection("right");
+                        drawView.invalidate();
+                    }
+                });
+                Timer timer= new Timer();
+                timer.schedule(new MyTimer(),0,100);
             }
         });
-        ((Button)findViewById(R.id.up)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snake.onMove(10,"up");
-                drawView.invalidate();
-            }
-        });
-        ((Button)findViewById(R.id.left)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snake.onMove(10,"left");
-                drawView.invalidate();
-            }
-        });
-        ((Button)findViewById(R.id.right)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                snake.onMove(10,"right");
-                drawView.invalidate();
-            }
-        });
-        Timer timer= new Timer();
-        timer.schedule(new MyTimer(),0,500);
     }
 
     class DrawView extends View{
@@ -85,6 +99,7 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void run() {
             Log.i("my","tick");
+            snake.onMove();
             drawView.invalidate();
         }
     }
