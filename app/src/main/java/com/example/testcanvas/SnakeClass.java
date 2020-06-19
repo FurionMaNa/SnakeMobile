@@ -62,9 +62,14 @@ public class SnakeClass {
     }
 
     private void offset(){
-        for(int i=elemSnakeClasses.size()-2;i>0;i--){
-            elemSnakeClasses.set(i+1,elemSnakeClasses.get(i));
+        for(Integer i=elemSnakeClasses.size()-2;i>=0;i--){
+            ElemSnakeClass e =new ElemSnakeClass(elemSnakeClasses.get(i).getX(),elemSnakeClasses.get(i).getY());
+            elemSnakeClasses.set(i+1,e);
         }
+        for(Integer i=0;i<elemSnakeClasses.size();i++){
+            Log.i("Myc",i+" "+elemSnakeClasses.get(i).getX()+" "+elemSnakeClasses.get(i).getY());
+        }
+        Log.i("Myc","------------------------------------------------------------------");
     }
 
     public void onMove(){
@@ -109,7 +114,8 @@ public class SnakeClass {
     }
 
     public void isAte(EatClass eatClass){
-        if((elemSnakeClasses.get(0).getY()==eatClass.getY())&&(elemSnakeClasses.get(0).getX()==eatClass.getX())){
+        if(60>(Math.sqrt(Math.pow(elemSnakeClasses.get(0).getY()-eatClass.getY(),2)+Math.pow(elemSnakeClasses.get(0).getX()-eatClass.getX(),2)))){
+            elemSnakeClasses.add(elemSnakeClasses.get(0));
             eatClass.newPosition();
         }
     }
@@ -117,8 +123,12 @@ public class SnakeClass {
     public void Draw(Canvas canvas){
         Paint p=new Paint();
         p.setStyle(Paint.Style.FILL);
-        p.setColor(Color.GRAY);
         for(int i=0;i<elemSnakeClasses.size();i++){
+            if(i==0){
+                p.setColor(Color.GRAY);
+            }else{
+                p.setColor(Color.RED);
+            }
             canvas.drawCircle(elemSnakeClasses.get(i).getX(),elemSnakeClasses.get(i).getY(),40,p);
         }
     }
