@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class SnakeClass {
 
     private String direction="right";
-    private Integer speed=10;
+    private Integer speed=1;
     private ArrayList<ElemSnakeClass> elemSnakeClasses= new ArrayList<>();
     private int width;
     private int height;
@@ -27,6 +27,21 @@ public class SnakeClass {
     }
 
     public void setDirection(String direction) {
+        if((this.direction.equals("right"))&&(direction.equals("left"))) {
+            return;
+        }else{
+            if((this.direction.equals("up"))&&(direction.equals("down"))) {
+                return;
+            }else{
+                if((this.direction.equals("left"))&&(direction.equals("right"))) {
+                    return;
+                }else{
+                    if ((this.direction.equals("down"))&&(direction.equals("up"))) {
+                        return;
+                    }
+                }
+            }
+        }
         this.direction = direction;
     }
 
@@ -90,6 +105,12 @@ public class SnakeClass {
                     Log.i("my","GG");
                 }
                 break;
+        }
+    }
+
+    public void isAte(EatClass eatClass){
+        if((elemSnakeClasses.get(0).getY()==eatClass.getY())&&(elemSnakeClasses.get(0).getX()==eatClass.getX())){
+            eatClass.newPosition();
         }
     }
 

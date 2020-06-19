@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity{
     static int x=0;
     static int y=0;
     static SnakeClass snake;
+    static EatClass eat;
     static DrawView drawView;
 
     @Override
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity{
                 h[0] = linearLayout2.getHeight();
                 w[0] = linearLayout2.getWidth();
                 snake=new SnakeClass(w[0],h[0]);
+                eat=new EatClass(w[0],h[0]);
                 linearLayout2.addView(drawView);
                 snake.setSpeed(40);
                 ((Button)findViewById(R.id.down)).setOnClickListener(new View.OnClickListener() {
@@ -91,20 +93,18 @@ public class MainActivity extends AppCompatActivity{
         @Override
         protected void onDraw(Canvas canvas) {
             canvas.drawColor(Color.parseColor("#20c040"));
+            eat.Draw(canvas);
             snake.Draw(canvas);
         }
     }
 
     class MyTimer extends java.util.TimerTask{
 
-        public boolean isAte(){
-            return false;
-        }
-
         @Override
         public void run() {
             Log.i("my","tick");
             snake.onMove();
+            snake.isAte(eat);
             drawView.invalidate();
         }
     }
