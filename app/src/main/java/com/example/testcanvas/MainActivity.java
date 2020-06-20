@@ -26,11 +26,13 @@ public class MainActivity extends AppCompatActivity{
     static SnakeClass snake;
     static EatClass eat;
     static DrawView drawView;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context=MainActivity.this;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity{
             public void run(){
                 h[0] = linearLayout2.getHeight();
                 w[0] = linearLayout2.getWidth();
-                snake=new SnakeClass(w[0],h[0]);
+                snake=new SnakeClass(w[0],h[0], context);
                 eat=new EatClass(w[0],h[0]);
                 linearLayout2.addView(drawView);
                 snake.setSpeed(40);
@@ -103,8 +105,9 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void run() {
             Log.i("my","tick");
-            snake.onMove();
             snake.isAte(eat);
+            snake.onMove();
+            snake.isCollision();
             drawView.invalidate();
         }
     }

@@ -1,11 +1,17 @@
 package com.example.testcanvas;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class SnakeClass {
 
@@ -14,10 +20,13 @@ public class SnakeClass {
     private ArrayList<ElemSnakeClass> elemSnakeClasses= new ArrayList<>();
     private int width;
     private int height;
+    private Context context;
 
-    public SnakeClass(int width, int height) {
+    public SnakeClass(int width, int height, Context context) {
         this.width=width;
         this.height=height;
+        this.context=context;
+        Random r=new Random();
         ElemSnakeClass elem=new ElemSnakeClass(40,40);
         elemSnakeClasses.add(elem);
     }
@@ -79,8 +88,10 @@ public class SnakeClass {
                     offset();
                     elemSnakeClasses.get(0).setY(elemSnakeClasses.get(0).getY() - speed);
                 }else{
-                    //los
-                    Log.i("my","GG");
+                    elemSnakeClasses=new ArrayList<>();
+                    Random r=new Random();
+                    ElemSnakeClass elem=new ElemSnakeClass(40,40);
+                    elemSnakeClasses.add(elem);
                 }
                 break;
             case "down":
@@ -88,8 +99,11 @@ public class SnakeClass {
                     offset();
                     elemSnakeClasses.get(0).setY(elemSnakeClasses.get(0).getY() + speed);
                 }else{
-                    //los
-                    Log.i("my","GG");
+                    elemSnakeClasses=new ArrayList<>();
+                    Random r=new Random();
+                    ElemSnakeClass elem=new ElemSnakeClass(40,40);
+                    elemSnakeClasses.add(elem);
+                    Toast.makeText(context,"Ты проиграл",Toast.LENGTH_SHORT).show();
                 }
                 break;
             case "left":
@@ -97,8 +111,10 @@ public class SnakeClass {
                     offset();
                     elemSnakeClasses.get(0).setX(elemSnakeClasses.get(0).getX() - speed);
                 }else{
-                    //los
-                    Log.i("my","GG");
+                    elemSnakeClasses=new ArrayList<>();
+                    Random r=new Random();
+                    ElemSnakeClass elem=new ElemSnakeClass(40,40);
+                    elemSnakeClasses.add(elem);
                 }
                 break;
             case "right":
@@ -106,10 +122,24 @@ public class SnakeClass {
                     offset();
                     elemSnakeClasses.get(0).setX(elemSnakeClasses.get(0).getX() + speed);
                 }else{
-                    //los
-                    Log.i("my","GG");
+                    elemSnakeClasses=new ArrayList<>();
+                    Random r=new Random();
+                    ElemSnakeClass elem=new ElemSnakeClass(40,40);
+                    elemSnakeClasses.add(elem);
                 }
                 break;
+        }
+    }
+
+    public void isCollision(){
+        for(int i=3; i<elemSnakeClasses.size();i++){
+            if(80>(Math.sqrt(Math.pow(elemSnakeClasses.get(0).getY()-elemSnakeClasses.get(i).getY(),2)+Math.pow(elemSnakeClasses.get(0).getX()-elemSnakeClasses.get(i).getX(),2)))){
+                elemSnakeClasses=new ArrayList<>();
+                Random r=new Random();
+                ElemSnakeClass elem=new ElemSnakeClass(40,40);
+                elemSnakeClasses.add(elem);
+                break;
+            }
         }
     }
 
